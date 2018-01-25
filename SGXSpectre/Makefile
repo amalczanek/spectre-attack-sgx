@@ -3,9 +3,9 @@
 top_srcdir=..
 CC=gcc
 CXX=g++
-CCASFLAGS=-g -O2 -Wall -Werror -std=gnu99 -fno-strict-aliasing -fno-strict-overflow -D_FORTIFY_SOURCE=2 -fstack-protector-all -DHAVE_GNU_STACK -Wno-implicit-function-declaration
-CFLAGS=-g -O2 -Wall -Werror -std=gnu99 -fno-strict-aliasing -fno-strict-overflow -D_FORTIFY_SOURCE=2 -fstack-protector-all -DHAVE_GNU_STACK -Wno-pointer-sign
-CXXFLAGS=-g -O2 -Wall -Werror -std=c++03 -fno-strict-aliasing -fno-strict-overflow -D_FORTIFY_SOURCE=2 -fstack-protector-all -DHAVE_GNU_STACK
+CCASFLAGS=-g -O2 -Wall -std=gnu99 -fno-strict-aliasing -fno-strict-overflow -D_FORTIFY_SOURCE=2 -fstack-protector-all -DHAVE_GNU_STACK -Wno-implicit-function-declaration
+CFLAGS=-g -O2 -Wall -std=gnu99 -fno-strict-aliasing -fno-strict-overflow -D_FORTIFY_SOURCE=2 -fstack-protector-all -DHAVE_GNU_STACK -Wno-pointer-sign
+CXXFLAGS=-g -O2 -Wall -std=c++03 -fno-strict-aliasing -fno-strict-overflow -D_FORTIFY_SOURCE=2 -fstack-protector-all -DHAVE_GNU_STACK
 CPPFLAGS=-D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_SOURCE -D_GNU_SOURCE -DNO_SYSLOG -DCOMPILE_WITH_INTEL_SGX 
 DEFS=
 INCLUDE=-I. 
@@ -115,7 +115,7 @@ enclave_t.o: enclave_t.c
 #################################
 
 enclave_attack.o: enclave/enclave_attack.c enclave_t.c
-	$(CC) $(CFLAGS) $(Enclave_C_Flags) -I$(SGX_SDK)/include -fPIC -DPIC -c -o enclave/$@ $<
+	$(CC) $(CFLAGS) $(Enclave_C_Flags) -I$(SGX_SDK)/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include/ -fPIC -DPIC -c -o enclave/$@ $<
 	@echo "CC  <=  $<"
 
 enclave: enclave_t.o  enclave_attack.o

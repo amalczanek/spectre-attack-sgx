@@ -14,6 +14,13 @@
  */
 
 #include "enclave_t.h"
+#ifdef _MSC_VER
+#include <intrin.h> /* for rdtscp and clflush */
+#pragma optimize("gt",on)
+#else
+#include <x86intrin.h> /* for rdtscp and clflush */
+#endif
+
 
 //unsigned int array1_size = 16;
 uint8_t unused1[64];
@@ -30,9 +37,16 @@ size_t ecall_get_offset() {
 } 
 
 void ecall_victim_function(size_t x, uint8_t * array2, unsigned int * outside_array1_size) {
+        _mm_clflush(secret);
+        _mm_clflush(secret + 64);
+
+
 	//if (x < array1_size) {
 	if (x < *outside_array1_size) {
 		 temp &= array2[array1[x] * 512];
 	 }
+
+        _mm_clflush(secret);
+        _mm_clflush(secret + 64);
 }
 

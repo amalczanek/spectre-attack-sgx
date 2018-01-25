@@ -1,5 +1,21 @@
 # spectre-attack-sgx
-Sample code demonstrating a Spectre-like attack against an Intel SGX enclave.
+Author: Anthony Nicholas Malczanek
+Changes: Cache clearing before and after calling the vulnerable function.
+Fix: Clearing the cache lines seems to destroy the timing attack, thereby fixing the
+issue of leaking the enclave memory via the vulnerable function. 
+
+I only forked this repo, and added my fix to it. Clearing the cache lines before the
+call may not be necessary, as it seems doing it after the function call is sufficient.
+
+This only really works in HW mode, as SIM mode is going to cache the enclave because
+of the way the "SGX simulation" is implemented, so the fix appears to fail. However,
+it legitimately fixes the issue in HW mode, and you can disable the 2nd cache line
+clear (the secret+64 one), to see the difference in results.
+
+Tested on Ubuntu 16.04 on a Skylake machine using GCC 5. Modify the Makefile
+to include the appropriate GCC version's x86 intrinsics header if you're having
+trouble building on your machine. I also turned off treating warnings as errors.
+
 
 ## Overview 
 Given our [ongoing research](https://lsds.doc.ic.ac.uk/projects/sereca) on
